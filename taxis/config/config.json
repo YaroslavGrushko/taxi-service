@@ -1,0 +1,10 @@
+{
+    "port": 8080,
+    "mongoose": {
+        "uri": "mongodb://localhost/webcams",
+        "options": {
+            "keepAlive": 1,
+            "useNewUrlParser": true
+        }
+    }
+}
