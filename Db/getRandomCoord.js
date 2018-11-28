@@ -8,7 +8,7 @@ function getRandomCoord() {
     const LAT_MAX = 51.7;
 
     coord.longitude = Math.random() * (LONG_MAX - LONG_MIN) + LONG_MIN;
-    coord.latitude = Math.random() * (LAT_MIN - LAT_MIN) + LAT_MIN;
+    coord.latitude = Math.random() * (LAT_MAX - LAT_MIN) + LAT_MIN;
     return coord;
 }
 module.exports = getRandomCoord;
