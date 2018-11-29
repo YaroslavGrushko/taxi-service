@@ -1,5 +1,6 @@
 {
     "port": 5000,
+    "TAXIS_COUNT": 3,
     "mongoose": {
         "uri": "mongodb://localhost/webcams",
         "options": {

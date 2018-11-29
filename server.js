@@ -37,12 +37,14 @@ if (cluster.isMaster) {
     app.post('/make-order', function(req, res) {
         var order = JSON.parse(req.body.js_code);
         console.log("order received from c-server to server = " + JSON.stringify(order));
-
-        // send order to t-server (taxis - srever)>>>
+        var calcOptimalTaxi = require("./calcOptimalTaxi");
+        var closestTaxi = calcOptimalTaxi(order);
+        console.log("closestTaxi (from server) is: " + closestTaxi.taxiID + " distance: " + closestTaxi.distance)
+            // send order to t-server (taxis - srever)>>>
         var sendOrderToTaxi = require("./sendOrderToTaxi");
         // place order (form order)
         var placeOrder = require("./placeOrder");
-        placeOrder(order, sendOrderToTaxi);
+        placeOrder(order, closestTaxi.taxiID, sendOrderToTaxi);
         // <<<<<<<<<<<<<<<<<< send order to t-server
 
         // make response

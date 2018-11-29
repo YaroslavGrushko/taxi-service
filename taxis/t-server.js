@@ -39,8 +39,7 @@ if (cluster.isMaster) {
         var js_code = JSON.parse(req.body.js_code);
         var taxiID = js_code.taxiID;
         var order = js_code.order;
-        // every parallel worker emulated taxi (so taxiId=worker.id)
-        // if (taxiID == cluster.worker.id) {
+
         console.log("order received from server to t-server")
         console.log("taxiID (from t-server) = " + taxiID);
         console.log("order (from t-server) = " + JSON.stringify(order));
@@ -50,20 +49,6 @@ if (cluster.isMaster) {
         execOrder(taxiID, order, sendExecOrder);
         // make response
         res.end("ok");
-        // } else {
-        //     console.log("REJECTED taxiID!=worker.id");
-        //     console.log("repeaated request ...");
-        //     // secondarly attempt to sent data to approptiate taxi (worker)>>>
-        //     // send order to t-server (taxis - srever)>>>
-        //     var sendOrderToTaxi = require("../sendOrderToTaxi");
-        //     // data to send to main-server
-        //     var data = {
-        //         taxiID: taxiID,
-        //         order: order
-        //     };
-        //     sendOrderToTaxi(data);
-        //     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<secondarly attempt
-        // }
     });
 
     app.listen(app.get('port'), () => {
