@@ -14,7 +14,7 @@ function sendOrder(codestring) {
 
     // An object of options to indicate where to post to
     var post_options = {
-        host: 'localhost',
+        host: 'server',
         port: '5000',
         path: '/order-executed',
         method: 'POST',

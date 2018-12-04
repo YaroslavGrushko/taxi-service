@@ -28,7 +28,14 @@ if (cluster.isMaster) {
     // =================================
     const app = express();
     app.set('port', config.get('port'));
-
+	
+// deal with Access-Control-Allow-Origin bag on client request
+    app.use(function(req, res, next) {
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+        next();
+    });
+	
     // use body Parser
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
@@ -48,7 +55,7 @@ if (cluster.isMaster) {
         var sendExecOrder = require("./sendExecOrder");
         execOrder(taxiID, order, sendExecOrder);
         // make response
-        res.end("ok");
+        // res.end("ok");
     });
 
     app.listen(app.get('port'), () => {

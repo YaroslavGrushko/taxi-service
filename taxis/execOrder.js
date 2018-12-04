@@ -11,7 +11,7 @@ function execOrder(taxiID, order, callback) {
         };
         console.log(JSON.stringify(data));
         callback(data);
-    }, 500);
+    }, 10000);
 }
 
 module.exports = execOrder;
