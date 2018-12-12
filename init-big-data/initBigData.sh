@@ -1,0 +1,1 @@
+mongo taxisService --eval "var arg1=2;arg2=1" d:/Yaroslav_2017_2018/University_2018/Productive-web-systems/labs/lab3/apps/taxi-service-v-3/taxi-service.js
