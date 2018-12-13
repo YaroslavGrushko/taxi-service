@@ -2,35 +2,24 @@ var preOrders = new Array();
 const INDEX_MIN = 0;
 const INDEX_MAX = 9;
 const TAXIS_COUNT = 9;
-var preOrders = db.clients.find().limit(INDEX_MAX+1).toArray();
-				
+var preOrders = db.clients.find().limit(INDEX_MAX+1).toArray();			
 var orders = new Array();	
 var tracks = new Array();	
-	
-var job_id = arg2;
- 
-var documentNumber = arg1;
-// set 2500
-var batchNumber = 2500;
- 
-var job_name = 'Job#' + job_id
+var job_id = 1;
+var documentNumber = 2;
+var batchNumber = 1;
+var job_name = 'Job#' + job_id;
 var start = new Date();
- 
 var batchDocuments = new Array();
 var bTrackDocuments = new Array();
-
 var index = 0;
-
 while(index < documentNumber) {
 	var randomIndex1 = Math.round(Math.random() * (INDEX_MAX - INDEX_MIN) + INDEX_MIN);
     var randomIndex2 = Math.round(Math.random() * (INDEX_MAX - INDEX_MIN) + INDEX_MIN);
-
 	var from_point = preOrders[randomIndex1];
 	var to_point = preOrders[randomIndex2];
-	
 	var preOrder = {fromPoint: {latitude: from_point.Latitude, longitude: from_point.Longitude}, 
-					toPoint: {latitude: to_point.Latitude, longitude: to_point.Longitude}}
-
+					toPoint: {latitude: to_point.Latitude, longitude: to_point.Longitude}};
 		var taxi = getTaxisCoordR();
 		var closestTaxi = findClosest(preOrder.fromPoint, taxi);
 					
@@ -45,15 +34,12 @@ while(index < documentNumber) {
 		p3:points[2],
 		p4:points[3],
 		p5:points[4]
-	}
-
+	};
     batchDocuments[index % batchNumber] = document;
 	bTrackDocuments[index % batchNumber] = track;
-	
     if((index + 1) % batchNumber == 0) {
         db.orders.insert(batchDocuments);
 		batchDocuments = new Array();
-		
 		db.tracks.insert(bTrackDocuments);
 		bTrackDocuments = new Array();
     }
@@ -64,7 +50,7 @@ while(index < documentNumber) {
 }
 print(job_name + ' inserted ' + documentNumber + ' in ' + (new Date() - start)/1000.0 + 's');
 
-function gen5Points(x1,y1,x2,y2){
+var gen5Points = function (x1,y1,x2,y2){
 	var points = new Array();
 	var delta = (x2-x1)/4;
 	for(var i=0;i<5;i++){
@@ -75,53 +61,40 @@ function gen5Points(x1,y1,x2,y2){
 		points.push(point);
 	}
 	return points;
-}
+};
 
-function getTaxisCoordR() {
+var getTaxisCoordR = function (){
     var taxisCoord = [];
-	
     for (var i = 0; i < TAXIS_COUNT; i++) {
         var coord = {};
-		
         const LONG_MIN = -0.5;
         const LONG_MAX = 0.5;
-
         const LAT_MIN = 51.4;
         const LAT_MAX = 51.7;
-
         coord.longitude = Math.random() * (LONG_MAX - LONG_MIN) + LONG_MIN;
         coord.latitude = Math.random() * (LAT_MAX - LAT_MIN) + LAT_MIN;
         taxisCoord.push({ taxiID: i, coord: coord});
-    }
-
+    };
     return taxisCoord;
-}
+};
 
-function findClosest(order, taxis) {
-
+var findClosest = function (order, taxis) {
     var closestTaxi = {};
     var distances = [];
     var latitude_o = order.latitude;
     var longitude_o = order.longitude;
-
-
-        for (var i = 0; i < taxis.length; i++) {
-			
+        for (var i = 0; i < taxis.length; i++) {		
             var taxiID = taxis[i].taxiID;
             var latitude_t = taxis[i].coord.latitude;
             var longitude_t = taxis[i].coord.longitude;
-
             var distance = calcDistance(latitude_o, longitude_o, latitude_t, longitude_t, "K");
-
             distances.push({
                 taxiID: taxiID,
                 distance: distance
             });
         }
-
         var min = distances[0].distance;
         var taxi = distances[0].taxiID;
-		
         distances.forEach(function (item, i, distances) {
             if (min > item.distance) {
                 min = item.distance;
@@ -132,7 +105,6 @@ function findClosest(order, taxis) {
             taxiID: taxi,
             distance: min
         };
-
         taxis.forEach((element) => {
 			
             if (element.taxiID == taxi) {
@@ -143,8 +115,7 @@ function findClosest(order, taxis) {
 	return closestTaxi;
 }
 
-// function of calculating distance between coordinates
-function calcDistance(lat1, lon1, lat2, lon2, unit) {
+var calcDistance = function (lat1, lon1, lat2, lon2, unit) {
     if ((lat1 == lat2) && (lon1 == lon2)) {
         return 0;
     } else {
@@ -161,12 +132,10 @@ function calcDistance(lat1, lon1, lat2, lon2, unit) {
         dist = dist * 60 * 1.1515;
         if (unit == "K") {
             dist = dist * 1.609344
-        }
+        };
         if (unit == "N") {
             dist = dist * 0.8684
         }
         return dist;
-    }
+    };
 }
-			
-	
