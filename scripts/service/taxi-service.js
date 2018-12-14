@@ -1,4 +1,3 @@
-db=db.getSiblingDB("taxisService");
 var preOrders = new Array();
 const INDEX_MIN = 0;
 const INDEX_MAX = 9;
