@@ -13,5 +13,5 @@ node.js + mongoDb emulation of taxi service
 ***launch emulation of "taxis" service (Uber like:))***  
 7. open cmd in *taxi-service* folder and type **sh genBigData.sh** to generate 100000 records of taxis orders  
   
-Waite untile it will has generated all interrapt with **ctrl+c**
+Waite untile it will has generated all interrapt it with **ctrl+c**
 
