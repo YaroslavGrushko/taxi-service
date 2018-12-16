@@ -6,65 +6,90 @@ services:
     build:
      context: ./myShards/myRouter/
     container_name: config01_1
-    command: mongod --port 27017 --configsvr --replSet configserver --noprealloc --smallfiles --oplogSize 16
+    command: mongod --sslMode requireSSL --sslPEMKeyFile /sslkey/mongodb.pem --port 27017 --configsvr --replSet configserver --noprealloc --smallfiles --oplogSize 16
+    # volumes:
+      # - ./myShards/myRouter/scripts:/scripts 
   config02:
     build:
      context: ./myShards/myRouter/
     container_name: config02_1
-    command: mongod --port 27017 --configsvr --replSet configserver --noprealloc --smallfiles --oplogSize 16
+    command: mongod --sslMode requireSSL --sslPEMKeyFile /sslkey/mongodb.pem --port 27017 --configsvr --replSet configserver --noprealloc --smallfiles --oplogSize 16
   config03:
     build:
      context: ./myShards/myRouter/
     container_name: config03_1
-    command: mongod --port 27017 --configsvr --replSet configserver --noprealloc --smallfiles --oplogSize 16
+    command: mongod --sslMode requireSSL --sslPEMKeyFile /sslkey/mongodb.pem --port 27017 --configsvr --replSet configserver --noprealloc --smallfiles --oplogSize 16
 
   ## Shards
   shard01a:
     build:
      context: ./myShards/myShard01/
-    command: mongod --port 27018 --shardsvr --replSet shard01 --noprealloc --smallfiles --oplogSize 16
+    container_name: shard01a_1
+    command: mongod --sslMode requireSSL --sslPEMKeyFile /sslkey/mongodb.pem --port 27018 --shardsvr --replSet shard01 --noprealloc --smallfiles --oplogSize 16
   shard01b:
     build:
      context: ./myShards/myShard01/
     container_name: shard01b_1
-    command: mongod --port 27018 --shardsvr --replSet shard01 --noprealloc --smallfiles --oplogSize 16
+    command: mongod --sslMode requireSSL --sslPEMKeyFile /sslkey/mongodb.pem --port 27018 --shardsvr --replSet shard01 --noprealloc --smallfiles --oplogSize 16
+  shard01c:
+    build:
+     context: ./myShards/myShard01/
+    container_name: shard01c_1
+    command: mongod --sslMode requireSSL --sslPEMKeyFile /sslkey/mongodb.pem --port 27018 --shardsvr --replSet shard01 --noprealloc --smallfiles --oplogSize 16
   shard02a:
     build:
      context: ./myShards/myShard02/
     container_name: shard02a_1
-    command: mongod --port 27019 --shardsvr --replSet shard02 --noprealloc --smallfiles --oplogSize 16
+    command: mongod --sslMode requireSSL --sslPEMKeyFile /sslkey/mongodb.pem --port 27019 --shardsvr --replSet shard02 --noprealloc --smallfiles --oplogSize 16
   shard02b:
     build:
      context: ./myShards/myShard02/
     container_name: shard02b_1
-    command: mongod --port 27019 --shardsvr --replSet shard02 --noprealloc --smallfiles --oplogSize 16
+    command: mongod --sslMode requireSSL --sslPEMKeyFile /sslkey/mongodb.pem --port 27019 --shardsvr --replSet shard02 --noprealloc --smallfiles --oplogSize 16
+  shard02c:
+    build:
+     context: ./myShards/myShard02/
+    container_name: shard02c_1
+    command: mongod --sslMode requireSSL --sslPEMKeyFile /sslkey/mongodb.pem --port 27019 --shardsvr --replSet shard02 --noprealloc --smallfiles --oplogSize 16
   shard03a:
     build:
      context: ./myShards/myShard03/
     container_name: shard03a_1
-    command: mongod --port 27020 --shardsvr --replSet shard03 --noprealloc --smallfiles --oplogSize 16
+    command: mongod --sslMode requireSSL --sslPEMKeyFile /sslkey/mongodb.pem --port 27020 --shardsvr --replSet shard03 --noprealloc --smallfiles --oplogSize 16
   shard03b:
     build:
      context: ./myShards/myShard03/
     container_name: shard03b_1
-    command: mongod --port 27020 --shardsvr --replSet shard03 --noprealloc --smallfiles --oplogSize 16
+    command: mongod --sslMode requireSSL --sslPEMKeyFile /sslkey/mongodb.pem --port 27020 --shardsvr --replSet shard03 --noprealloc --smallfiles --oplogSize 16
+  shard03c:
+    build:
+     context: ./myShards/myShard03/
+    container_name: shard03c_1
+    command: mongod --sslMode requireSSL --sslPEMKeyFile /sslkey/mongodb.pem --port 27020 --shardsvr --replSet shard03 --noprealloc --smallfiles --oplogSize 16
 
 
-  ## Router
+
+  # Router
   router:
     build:
      context: ./myShards/myRouter/
-    command: mongos --port 27017 --configdb configserver/config01:27017,config02:27017,config03:27017 --bind_ip_all
+    # command: mongos --sslMode requireSSL --sslPEMKeyFile /sslkey/mongodb.pem --port 27017 --configdb configserver/config01:27017 --bind_ip_all
+    command: mongos --sslMode requireSSL --sslPEMKeyFile /sslkey/mongodb.pem --port 27017 --configdb configserver/config01:27017,config02:27017,config03:27017 --bind_ip_all
     # command: mongos --port 27017 --configdb configserver/config01:27017 --bind_ip_all
     ports:
       - "27017:27017"
+    # volumes:
+      # - ./myShards/myRouter/scripts:/scripts
     depends_on:
       - config01
       - config02
       - config03
       - shard01a
       - shard01b
+      - shard01c
       - shard02a
       - shard02b
+      - shard02c
       - shard03a
       - shard03b
+      - shard03c

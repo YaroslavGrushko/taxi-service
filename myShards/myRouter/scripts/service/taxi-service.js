@@ -1,3 +1,4 @@
+db = db.getSiblingDB("taxisService");
 var preOrders = new Array();
 const INDEX_MIN = 0;
 const INDEX_MAX = 9;
@@ -26,10 +27,24 @@ while(index < documentNumber) {
 	var preOrder = {fromPoint: {latitude: from_point.Latitude, longitude: from_point.Longitude}, 
 					toPoint: {latitude: to_point.Latitude, longitude: to_point.Longitude}};
 		var taxi = getTaxisCoordR();
-		var closestTaxi = findClosest(preOrder.fromPoint, taxi);		
+		var closestTaxi = findClosest(preOrder.fromPoint, taxi);
+    var r = 0;
+	var index_inner = index % batchNumber;
+	var frst_barrier = batchNumber/4;
+	var scnd_barrier = frst_barrier+frst_barrier;
+    if(index_inner < frst_barrier){
+    r = 1;
+	}
+    if(frst_barrier < index_inner < scnd_barrier){
+	r = -1;
+	}	
+	if(index_inner > scnd_barrier){
+	r = 0;
+	}
 	var document = {        
         taxiID : closestTaxi.taxiID,
-        preOrder : preOrder
+        preOrder : preOrder,
+		r : r
     };
 	var points = gen5Points(preOrder.fromPoint.latitude, preOrder.fromPoint.longitude, preOrder.toPoint.latitude, preOrder.toPoint.longitude);
 	var track = {
@@ -39,8 +54,8 @@ while(index < documentNumber) {
 		p4:points[3],
 		p5:points[4]
 	};
-    batchDocuments[index % batchNumber] = document;
-	bTrackDocuments[index % batchNumber] = track;
+    batchDocuments[index_inner] = document;
+	bTrackDocuments[index_inner] = track;
     if((index + 1) % batchNumber == 0) {
         db.orders.insert({ ordersShardingField: 1, batchDocuments});
 		batchDocuments = new Array();

@@ -1,5 +1,5 @@
 FROM mongo
 COPY scripts /scripts
-COPY mydata /mydata
+COPY sslkey /sslkey
 
 EXPOSE 27018
