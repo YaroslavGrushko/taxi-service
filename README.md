@@ -1,6 +1,6 @@
 # taxi-service
 mongoDb emulation of taxi service ( ***this project only toy;)*** )
-# Stracture  
+# Structure  
 - mongo cluster:  
 with 3 config servers + 3 shards (1 rep set with every) + 1 router (mongos)  
 - ssl to applyed to any of servers of this cluster (to config servers, to shards, to mongos)
