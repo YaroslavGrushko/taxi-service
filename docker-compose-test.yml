@@ -1,0 +1,9 @@
+version: "2"
+services:
+ router:
+  build:
+   context: ./myShards/myRouter/
+  ports:
+    - "27017:27017"
+  volumes:
+    - ./sslkey:/sslkey
