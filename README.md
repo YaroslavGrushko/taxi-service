@@ -1,5 +1,5 @@
 # taxi-service
-mongoDb emulation of taxi service (***this project only toy;)***) 
+mongoDb emulation of taxi service ***this project only toy;)***
 # Stracture  
 - mongo cluster:  
 with 3 config servers + 3 shards (1 rep set with every) + 1 router (mongos)  
