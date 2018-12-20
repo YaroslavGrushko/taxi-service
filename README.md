@@ -22,7 +22,7 @@ with 3 config servers + 3 shards (1 rep set with every) + 1 router (mongos)
 ***launch emulation of "taxis" service (Uber like:))***  
 7. open cmd in *taxi-service* folder and type **sh genBigData.sh** to generate 10000000 records of taxis orders  
   
-Waite untile it will has generated all interrapt it with **ctrl+c**  
+Wait untile it will has generated all interrapt it with **ctrl+c**  
 
 ***Launch visualization of taxis movement***  
 8. get your personal google api map key  
