@@ -25,14 +25,14 @@ with 3 config servers + 3 shards (1 rep set with every) + 1 router (mongos)
 Waite untile it will has generated all interrapt it with **ctrl+c**  
 
 ***Launch visualization of taxis movement***  
-8. get your personal google api map key
-9. paste it to instead *YOUR_API_KEY_HERE* in taxi-service/server/front/index.html
-10. install node.js on your OS
-11. go to taxi-service/server and launch in terminal **npm install** to install dependencies for node.js server
-12. open port *5000* on your windows firewall
-13. go to taxi-service/server and launch in terminal **npm start** to launch server on port *localhost:5000*
-14. open browser (google chroome for example) and type **localhost:5000/home**
-15. press fetchDb button to fetch *tracks* data from taxisService.tracks collection from mongos
-16. press move to see one step movement of taxi
-
-That's all. Hope this helps you:)
+8. get your personal google api map key  
+9. paste it to instead *YOUR_API_KEY_HERE* in taxi-service/server/front/index.html  
+10. install node.js on your OS  
+11. go to taxi-service/server and launch in terminal **npm install** to install dependencies for node.js server  
+12. open port *5000* on your windows firewall  
+13. go to taxi-service/server and launch in terminal **npm start** to launch server on port *localhost:5000*  
+14. open browser (google chroome for example) and type **localhost:5000/home**  
+15. press fetchDb button to fetch *tracks* data from taxisService.tracks collection from mongos  
+16. press move to see one step movement of taxi  
+  
+That's all. Hope this helps you:)  
