@@ -1,0 +1,99 @@
+<h1>hello friend!</h1>
+<input type="button" value="init map" onclick="initMap()">
+<input type="button" onclick="getPoints()" value="fetchDb" />
+<span id="dbStatus"></span>
+<input type="button" onclick="nextBlock()" value="next block">
+<span id="blockNspan"></span>
+<input type="button" value="Move" onclick="move()" />
+<br>
+<span id="coord"></span>
+<div id="map" style="width: 480px; height: 320px;"></div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY_HERE&callback=initMap" type="text/javascript"></script>
+
+<script>
+    // all blocks of points fetched from Db:
+    var dbPoints = {};
+    // current block index
+    var blockN = 0;
+    // current car index
+    var carN = 0;
+
+    function getPoints() {
+
+        'use strict';
+
+        fetch('http://localhost:5000/get-points')
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(points) {
+                dbPoints = points
+                $('#dbStatus').text("db fetched!");
+            })
+            .catch(alert);
+    }
+
+    function nextBlock() {
+        if (blockN < dbPoints.length) {
+            blockN = blockN + 1;
+        } else {
+            blockN = 0;
+        }
+        $("#blockNspan").text("block: " + blockN);
+    }
+
+    function move() {
+        // current block
+        var block = dbPoints[blockN];
+        // js object to array:
+        var blockArr = Object.values(block);
+        // ...:)
+        var newBlockArr = blockArr[0];
+
+        if (carN < newBlockArr.length) {
+            // car coordinates
+            var carC = newBlockArr[carN];
+            carN++;
+            $("#coord").text(JSON.stringify(carC));
+            initMarker(carC);
+        } else {
+            $("#coord").text("destination point");
+            carN = 0;
+        }
+    }
+    //  google maps api:
+    function initMap() {
+        var myLatLng = {
+            lat: 51.404543,
+            lng: 0.014195
+        };
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 8,
+            center: myLatLng
+        });
+        var marker = new google.maps.Marker({
+            position: myLatLng,
+            map: map,
+            title: 'Hello World!'
+        });
+    }
+
+    function initMarker(coord) {
+        var myLatLng = {};
+        myLatLng.lat = coord.latitude;
+        myLatLng.lng = coord.longitude;
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 14,
+            center: myLatLng
+        });
+
+        var marker = new google.maps.Marker({
+            position: myLatLng,
+            map: map,
+            title: 'Hello World!'
+        });
+    }
+</script>

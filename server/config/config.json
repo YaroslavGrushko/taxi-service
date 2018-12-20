@@ -1,0 +1,8 @@
+{
+    "port": 5000,
+    "TAXIS_COUNT": 3,
+    "my-mongo": {
+        "mongo-url": "mongodb://yar:mypwd@127.0.0.1:27017/?authMechanism=DEFAULT&authSource=taxisService&ssl=true",
+        "dbName": "taxisService"
+    }
+}
